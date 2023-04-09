@@ -19,12 +19,12 @@ resource "oci_identity_compartment" "identity_compartment" {
   name           = "oci"
 }
 
-resource "oci_core_vcn" "vcn" {
+resource "oci_core_vcn" "oci_vcn" {
   compartment_id = var.tenancy_ocid
   display_name   = "oci_vcn"
 }
 
-resource "oci_core_instance" "vm" {
+resource "oci_core_instance" "oci_vm" {
   # Required
   availability_domain = data.oci_identity_availability_domains.ads.availability_domains[0].name
   compartment_id      = var.tenancy_ocid
@@ -35,12 +35,26 @@ resource "oci_core_instance" "vm" {
   }
 
   # Optional
-  display_name = "oci_vm"
+  display_name = "oci"
   create_vnic_details {
     assign_public_ip = true
-    subnet_id        = oci_core_vcn.vcn.id
+    subnet_id        = oci_core_vcn.oci_vcn.id
   }
   metadata = {
     ssh_authorized_keys = file("$HOME/.ssh/id_rsa.pub")
   }
 }
+
+# resource "oci_core_vnic_attachment" "oci_vnic" {
+#   instance_id = oci_core_instance.oci_vm.id
+# }
+
+# resource "oci_core_private_ip" "oci_private_ip" {
+#   vnic_id = oci_core_vcn.oci_vcn.id
+# }
+
+# resource "oci_core_public_ip" "oci_ip" {
+#   compartment_id = var.tenancy_ocid
+#   lifetime       = "ephemeral"
+#   private_ip_id  = oci_core_private_ip.oci_private_ip.id
+# }
