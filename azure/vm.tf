@@ -1,5 +1,6 @@
 # Create virtual network
 resource "azurerm_virtual_network" "my_terraform_network" {
+  count               = 0
   name                = "myVnet"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.rg.location
@@ -8,6 +9,7 @@ resource "azurerm_virtual_network" "my_terraform_network" {
 
 # Create subnet
 resource "azurerm_subnet" "my_terraform_subnet" {
+  count                = 0
   name                 = "mySubnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.my_terraform_network.name
@@ -24,6 +26,7 @@ resource "azurerm_subnet" "my_terraform_subnet" {
 
 # Create network interface
 resource "azurerm_network_interface" "my_terraform_nic" {
+  count               = 0
   name                = "myNIC"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -37,7 +40,7 @@ resource "azurerm_network_interface" "my_terraform_nic" {
 }
 
 data "template_file" "script" {
-  template = "${file("${path.module}/../init.tpl")}"
+  template = file("${path.module}/../init.tpl")
 
   vars = {
     consul_address = vars.tailscale_auth_key
@@ -57,6 +60,7 @@ data "template_cloudinit_config" "config" {
 
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "vm_B2pts2" {
+  count                 = 0
   name                  = "${azurerm_resource_group.rg.name}_${azurerm_resource_group.rg.location}_B2pts2"
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
