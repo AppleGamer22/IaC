@@ -1,12 +1,12 @@
-variable "env0_org_id" {
-  type      = string
-  sensitive = true
-}
+# variable "env0_org_id" {
+#   type      = string
+#   sensitive = true
+# }
 
-variable "env0_project_id" {
-  type      = string
-  sensitive = true
-}
+# variable "env0_project_id" {
+#   type      = string
+#   sensitive = true
+# }
 
 variable "tailscale_auth_key" {
   type        = string
