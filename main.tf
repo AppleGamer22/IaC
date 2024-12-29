@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "4.14.0"
     }
+    tailscale = {
+      source  = "tailscale/tailscale"
+      version = "0.17.2"
+    }
     random = {
       source  = "hashicorp/random"
       version = "3.6.3"
