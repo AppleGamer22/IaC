@@ -29,6 +29,7 @@ jobs:
         env:
           # https://opentofu.org/docs/cli/config/config-file/#environment-variable-credentials
           TF_TOKEN_backend_api_env0_com: ${{ secrets.ENV0_API_ACCESS_TOKEN }}
+          TAILSCALE_AUTH_KEY: ${{secrets.TAILSCALE_AUTH_KEY}}
           # https://opentofu.org/docs/language/values/variables/#environment-variables
           # TF_VAR_env0_org_id: ${{secrets.ENV0_ORG_ID}}
           # TF_VAR_env0_project_id: ${{secrets.ENV0_PROJECT_ID}}
@@ -37,6 +38,7 @@ jobs:
         run: tofu apply
         env:
           TF_TOKEN_backend_api_env0_com: ${{ secrets.ENV0_API_ACCESS_TOKEN }}
+          TAILSCALE_AUTH_KEY: ${{secrets.TAILSCALE_AUTH_KEY}}
           # TF_VAR_env0_org_id: ${{secrets.ENV0_ORG_ID}}
           TF_VAR_tailscale_auth_key: ${{secrets.TAILSCALE_AUTH_KEY}}
         

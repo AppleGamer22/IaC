@@ -31,3 +31,8 @@ provider "azurerm" {
     }
   }
 }
+
+provider "tailscale" {
+  api_key = var.tailscale_api_key
+  tailnet = "applegamer22.github"
+}

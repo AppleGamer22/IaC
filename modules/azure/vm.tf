@@ -70,7 +70,7 @@ data "template_file" "script" {
   template = file("${path.module}/../init.tpl")
 
   vars = {
-    tailscale_auth_key = vars.tailscale_auth_key
+    tailscale_auth_key = module.tailscale.tailnet_key
     routes             = "10.1.0.0/24,168.63.129.16/32"
     accept_dns         = false
   }

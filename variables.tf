@@ -8,6 +8,12 @@
 #   sensitive = true
 # }
 
+variable "tailscale_api_key" {
+  type        = string
+  sensitive   = true
+  description = "Tailscale API Key"
+}
+
 variable "tailscale_auth_key" {
   type        = string
   sensitive   = true
