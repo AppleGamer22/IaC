@@ -7,6 +7,11 @@
 #   type      = string
 #   sensitive = true
 # }
+variable "azure_subscription_id" {
+  type = string
+  sensitive = true
+  description = "Azure Subscription ID"
+}
 
 variable "tailscale_api_key" {
   type        = string

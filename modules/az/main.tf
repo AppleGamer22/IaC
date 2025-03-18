@@ -21,6 +21,12 @@ provider "azurerm" {
       delete_os_disk_on_deletion = false
     }
   }
+  subscription_id = var.azure_subscription_id
+}
+
+provider "tailscale" {
+  api_key = var.tailscale_api_key
+  tailnet = "applegamer22.github"
 }
 
 module "ts" {

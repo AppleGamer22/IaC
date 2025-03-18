@@ -3,3 +3,4 @@ variable "tailscale_api_key" {
   sensitive   = true
   description = "Tailscale API Key"
 }
+

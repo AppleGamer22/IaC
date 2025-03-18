@@ -12,6 +12,7 @@
 
 module "az" {
   source = "./modules/az"
+  azure_subscription_id = var.azure_subscription_id
   tailscale_api_key = var.tailscale_api_key
 }
 

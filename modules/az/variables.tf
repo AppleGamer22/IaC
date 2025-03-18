@@ -1,3 +1,9 @@
+variable "azure_subscription_id" {
+  type = string
+  sensitive = true
+  description = "Azure Subscription ID"
+}
+
 variable "resource_group_location" {
   type        = string
   default     = "eastus"
