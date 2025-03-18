@@ -95,7 +95,6 @@ resource "azurerm_linux_virtual_machine" "vm_B2pts2" {
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.vm_network_interface.id]
   size                  = "Standard_B2pts_v2"
-  disable_password_authentication = true
 
   os_disk {
     name                 = "vmDisk"
@@ -103,22 +102,23 @@ resource "azurerm_linux_virtual_machine" "vm_B2pts2" {
     storage_account_type = "Premium_LRS"
   }
 
+  # az vm image list --architecture Arm64 --publisher Canonical --all --output table
   source_image_reference {
     publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "24_04-lts-gen2"
+    offer     = "ubuntu-24_04-lts"
+    sku       = "minimal-arm64"
     version   = "latest"
   }
 
-  computer_name  = "hostname"
+  computer_name  = "B2ptps2"
   admin_username = var.username
   # https://www.phillipsj.net/posts/cloud-init-with-terraform/
   custom_data = data.template_cloudinit_config.config.rendered
 
-  # admin_ssh_key {
-  #   username   = var.username
-  #   public_key = azapi_resource_action.ssh_public_key_gen.output.publicKey
-  # }
+  admin_ssh_key {
+    username   = var.username
+    public_key = tls_private_key.dummy_key.public_key_openssh
+  }
 }
 
 resource "tailscale_dns_split_nameservers" "azure_split_nameservers" {
