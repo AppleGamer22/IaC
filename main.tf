@@ -1,19 +1,4 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "4.14.0"
-    }
-    tailscale = {
-      source  = "tailscale/tailscale"
-      version = "0.17.2"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.6.3"
-    }
-  }
-
+# terraform {
   # https://docs.env0.com/docs/login
   # cloud {
   #   hostname     = "backend.api.env0.com"
@@ -22,17 +7,11 @@ terraform {
   #     name = "applegamer22"
   #   }
   # }
+# }
+
+
+module "az" {
+  source = "./modules/az"
+  tailscale_api_key = var.tailscale_api_key
 }
 
-provider "azurerm" {
-  features {
-    virtual_machine {
-      delete_os_disk_on_deletion = false
-    }
-  }
-}
-
-provider "tailscale" {
-  api_key = var.tailscale_api_key
-  tailnet = "applegamer22.github"
-}

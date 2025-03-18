@@ -1,3 +1,18 @@
+terraform {
+  required_providers {
+    tailscale = {
+      source  = "tailscale/tailscale"
+      version = "0.18.0"
+    }
+  }
+}
+
+
+provider "tailscale" {
+  api_key = var.tailscale_api_key
+  tailnet = "applegamer22.github"
+}
+
 resource "tailscale_tailnet_key" "tailscale_key" {
   reusable      = true
   ephemeral     = false

@@ -67,10 +67,10 @@ resource "azurerm_network_interface_security_group_association" "network_interfa
 }
 
 data "template_file" "script" {
-  template = file("${path.module}/../init.tpl")
+  template = file("${path.module}/../../cloud_init.yml")
 
   vars = {
-    tailscale_auth_key = module.tailscale.tailnet_key
+    tailscale_auth_key = module.ts.tailnet_key
     routes             = "10.1.0.0/24,168.63.129.16/32"
     accept_dns         = false
   }
