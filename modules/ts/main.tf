@@ -18,7 +18,7 @@ resource "tailscale_tailnet_key" "tailscale_key" {
   ephemeral     = false
   preauthorized = true
   expiry        = 7776000
-  description   = "IaC Tailscale key (90 days)"
+  description   = "IaC Tailscale key for 90 days"
 }
 
 output "tailnet_key" {
