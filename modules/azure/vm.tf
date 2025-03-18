@@ -2,7 +2,7 @@
 
 
 resource "azurerm_virtual_network" "vm_network" {
-  count               = 0
+  # count               = 0
   name                = "vmNetwork"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.rg.location
@@ -11,7 +11,7 @@ resource "azurerm_virtual_network" "vm_network" {
 
 # Create subnet
 resource "azurerm_subnet" "vm_subnet" {
-  count                = 0
+  # count                = 0
   name                 = "vmSubnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vm_network.name
@@ -47,7 +47,7 @@ resource "azurerm_network_security_group" "tailscale_security_group" {
 
 # Create network interface
 resource "azurerm_network_interface" "vm_network_interface" {
-  count               = 0
+  # count               = 0
   name                = "vmNIC"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -89,7 +89,7 @@ data "template_cloudinit_config" "config" {
 
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "vm_B2pts2" {
-  count                 = 0
+  # count                 = 0
   name                  = "${azurerm_resource_group.rg.name}_${azurerm_resource_group.rg.location}_B2pts2"
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name

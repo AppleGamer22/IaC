@@ -13,9 +13,3 @@ variable "tailscale_api_key" {
   sensitive   = true
   description = "Tailscale API Key"
 }
-
-variable "tailscale_auth_key" {
-  type        = string
-  sensitive   = true
-  description = "Tailscale Authentication Key"
-}
