@@ -95,6 +95,7 @@ resource "azurerm_linux_virtual_machine" "vm_B2pts2" {
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.vm_network_interface.id]
   size                  = "Standard_B2pts_v2"
+  disable_password_authentication = true
 
   os_disk {
     name                 = "vmDisk"
