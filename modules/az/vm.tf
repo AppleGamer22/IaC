@@ -88,7 +88,7 @@ resource "azurerm_linux_virtual_machine" "vm_B2pts2" {
   location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.vm_network_interface.id]
-  size                  = "Standard_B2pts_v2"
+  size                  = "Standard_B1s"
 
   os_disk {
     name                 = "vmDisk"
@@ -96,11 +96,13 @@ resource "azurerm_linux_virtual_machine" "vm_B2pts2" {
     storage_account_type = "Premium_LRS"
   }
 
+  # az vm image list --architecture x64 --publisher Canonical --all --output table
   # az vm image list --architecture Arm64 --publisher Canonical --all --output table
   source_image_reference {
     publisher = "Canonical"
     offer     = "ubuntu-24_04-lts"
-    sku       = "minimal-arm64"
+    sku       = "server"
+    # sku       = "minimal-arm64"
     version   = "latest"
   }
 
