@@ -66,23 +66,17 @@ resource "azurerm_network_interface_security_group_association" "network_interfa
   network_security_group_id = azurerm_network_security_group.tailscale_security_group.id
 }
 
-data "template_file" "script" {
-  template = file("${path.module}/../../cloud_init.yml")
-
-  vars = {
-    tailscale_auth_key = module.ts.tailnet_key
-    routes             = "10.1.0.0/24,168.63.129.16/32"
-    accept_dns         = false
-  }
-}
-
 data "template_cloudinit_config" "config" {
   gzip          = true
   base64_encode = true
 
   part {
     content_type = "text/cloud-config"
-    content      = data.template_file.script.rendered
+    content      = templatefile("${path.module}/../../cloud_init.yml", {
+      tailscale_auth_key = module.ts.tailnet_key
+      routes             = "10.1.0.0/24,168.63.129.16/32"
+      accept_dns         = false
+    })
   }
 }
 
