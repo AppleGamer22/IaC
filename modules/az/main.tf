@@ -37,12 +37,12 @@ module "ts" {
   tailscale_api_key = var.tailscale_api_key
 }
 
-resource "random_pet" "rg_name" {
-  prefix = var.resource_group_name_prefix
-}
+# resource "random_pet" "rg_name" {
+#   prefix = var.resource_group_name_prefix
+# }
 
-resource "azurerm_resource_group" "rg" {
+resource "azurerm_resource_group" "az_resource_group" {
   location = var.resource_group_location
-  name     = random_pet.rg_name.id
+  name     = var.resource_group_location
 }
 

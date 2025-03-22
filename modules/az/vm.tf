@@ -3,17 +3,17 @@
 
 resource "azurerm_virtual_network" "vm_network" {
   # count               = 0
-  name                = "vmNetwork"
+  name                = "${azurerm_resource_group.az_resource_group.name}_${azurerm_resource_group.az_resource_group.location}_network"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.az_resource_group.location
+  resource_group_name = azurerm_resource_group.az_resource_group.name
 }
 
 # Create subnet
 resource "azurerm_subnet" "vm_subnet" {
   # count                = 0
-  name                 = "vmSubnet"
-  resource_group_name  = azurerm_resource_group.rg.name
+  name                 = "${azurerm_resource_group.az_resource_group.name}_${azurerm_resource_group.az_resource_group.location}_subnet"
+  resource_group_name  = azurerm_resource_group.az_resource_group.name
   virtual_network_name = azurerm_virtual_network.vm_network.name
   address_prefixes     = ["10.0.1.0/24"]
 }
@@ -21,16 +21,16 @@ resource "azurerm_subnet" "vm_subnet" {
 # Create public IPs
 # resource "azurerm_public_ip" "vm_public_ip" {
 #   name                = "vmPublicIP"
-#   location            = azurerm_resource_group.rg.location
-#   resource_group_name = azurerm_resource_group.rg.name
+#   location            = azurerm_resource_group.az_resource_group.location
+#   resource_group_name = azurerm_resource_group.az_resource_group.name
 #   allocation_method   = "Dynamic"
 # }
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "tailscale_security_group" {
-  name                = "tailscaleNetworkSecurityGroup"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  name                = "tailscale_security_group"
+  location            = azurerm_resource_group.az_resource_group.location
+  resource_group_name = azurerm_resource_group.az_resource_group.name
 
   security_rule {
     name                       = "Tailscale"
@@ -49,8 +49,8 @@ resource "azurerm_network_security_group" "tailscale_security_group" {
 resource "azurerm_network_interface" "vm_network_interface" {
   # count               = 0
   name                = "vmNIC"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.az_resource_group.location
+  resource_group_name = azurerm_resource_group.az_resource_group.name
 
   ip_configuration {
     name                          = "vm_nic_configuration"
@@ -82,16 +82,16 @@ data "template_cloudinit_config" "config" {
 
 
 # Create virtual machine
-resource "azurerm_linux_virtual_machine" "vm_B2pts2" {
+resource "azurerm_linux_virtual_machine" "vmB1s" {
   # count                 = 0
-  name                  = "${azurerm_resource_group.rg.name}_${azurerm_resource_group.rg.location}_B2pts2"
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
+  name                  = "${azurerm_resource_group.az_resource_group.name}_${azurerm_resource_group.az_resource_group.location}"
+  location              = azurerm_resource_group.az_resource_group.location
+  resource_group_name   = azurerm_resource_group.az_resource_group.name
   network_interface_ids = [azurerm_network_interface.vm_network_interface.id]
   size                  = "Standard_B1s"
 
   os_disk {
-    name                 = "vmDisk"
+    name                 = "${azurerm_resource_group.az_resource_group.name}_${azurerm_resource_group.az_resource_group.location}_disk_B1s"
     caching              = "ReadWrite"
     storage_account_type = "Premium_LRS"
   }
@@ -106,7 +106,7 @@ resource "azurerm_linux_virtual_machine" "vm_B2pts2" {
     version   = "latest"
   }
 
-  computer_name  = "B2ptps2"
+  computer_name  = azurerm_resource_group.az_resource_group.location
   admin_username = var.username
   # https://www.phillipsj.net/posts/cloud-init-with-terraform/
   custom_data = data.template_cloudinit_config.config.rendered
