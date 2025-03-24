@@ -84,14 +84,14 @@ data "template_cloudinit_config" "config" {
 # Create virtual machine
 resource "azurerm_linux_virtual_machine" "vmB1s" {
   # count                 = 0
-  name                  = "${azurerm_resource_group.az_resource_group.name}_${azurerm_resource_group.az_resource_group.location}"
+  name                  = "${azurerm_resource_group.az_resource_group.name}_${var.az_vm_size}"
   location              = azurerm_resource_group.az_resource_group.location
   resource_group_name   = azurerm_resource_group.az_resource_group.name
   network_interface_ids = [azurerm_network_interface.vm_network_interface.id]
-  size                  = "Standard_B1s"
+  size                  = "Standard_${var.az_vm_size}"
 
   os_disk {
-    name                 = "${azurerm_resource_group.az_resource_group.name}_${azurerm_resource_group.az_resource_group.location}_disk_B1s"
+    name                 = "${azurerm_resource_group.az_resource_group.name}_disk_${var.az_vm_size}"
     caching              = "ReadWrite"
     storage_account_type = "Premium_LRS"
   }
@@ -106,7 +106,7 @@ resource "azurerm_linux_virtual_machine" "vmB1s" {
     version   = "latest"
   }
 
-  computer_name  = azurerm_resource_group.az_resource_group.location
+  computer_name  = var.az_vm_size
   admin_username = var.username
   # https://www.phillipsj.net/posts/cloud-init-with-terraform/
   custom_data = data.template_cloudinit_config.config.rendered
