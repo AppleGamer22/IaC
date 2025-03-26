@@ -6,10 +6,9 @@ variable "azure_subscription_id" {
 
 variable "resource_group_location" {
   type        = string
-  # default     = "australiaeast"
+  default     = "australiaeast"
   # default     = "australiasoutheast"
   # default     = "eastus"
-  default     = "israelcentral"
   description = "Location of the resource group."
 }
 
