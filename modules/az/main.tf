@@ -15,6 +15,7 @@ terraform {
   }
 }
 
+# https://docs.env0.com/docs/connect-your-cloud-account#azure
 provider "azurerm" {
   features {
     virtual_machine {
@@ -29,7 +30,7 @@ provider "azurerm" {
 
 provider "tailscale" {
   api_key = var.tailscale_api_key
-  tailnet = "applegamer22.github"
+  tailnet = var.tailnet_name
 }
 
 module "ts" {

@@ -7,6 +7,12 @@
 #   type      = string
 #   sensitive = true
 # }
+
+variable "tailnet_name" {
+  type = string
+  default = "applegamer22.github"
+}
+
 variable "azure_subscription_id" {
   type = string
   sensitive = true

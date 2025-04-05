@@ -6,9 +6,10 @@ variable "azure_subscription_id" {
 
 variable "resource_group_location" {
   type        = string
-  default     = "australiaeast"
+  # default     = "australiaeast"
   # default     = "australiasoutheast"
   # default     = "eastus"
+  default     = "israelcentral"
   description = "Location of the resource group."
 }
 
@@ -27,6 +28,11 @@ variable "username" {
   type        = string
   description = "The username for the local account that will be created on the new VM."
   default     = "applegamer22"
+}
+
+variable "tailnet_name" {
+  type = string
+  default = "applegamer22.github"
 }
 
 variable "tailscale_api_key" {

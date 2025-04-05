@@ -10,7 +10,7 @@ terraform {
 
 provider "tailscale" {
   api_key = var.tailscale_api_key
-  tailnet = "applegamer22.github"
+  tailnet = var.tailnet_name
 }
 
 resource "tailscale_tailnet_key" "tailscale_key" {
