@@ -21,6 +21,11 @@ resource "tailscale_tailnet_key" "tailscale_key" {
   description   = "IaC Tailscale key for 90 days"
 }
 
+resource "tailscale_dns_split_nameservers" "azure_split_nameservers" {
+  domain      = "internal.cloudapp.net"
+  nameservers = ["168.63.129.16"]
+}
+
 output "tailnet_key" {
   value       = tailscale_tailnet_key.tailscale_key.key
   sensitive   = true

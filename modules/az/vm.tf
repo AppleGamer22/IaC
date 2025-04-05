@@ -72,7 +72,7 @@ data "template_cloudinit_config" "config" {
 
   part {
     content_type = "text/cloud-config"
-    content      = templatefile("${path.module}/../../cloud_init.yml", {
+    content = templatefile("${path.module}/../../cloud_init.yml", {
       tailscale_auth_key = module.ts.tailnet_key
       routes             = "10.1.0.0/24,168.63.129.16/32"
       accept_dns         = false
@@ -103,10 +103,10 @@ resource "azurerm_linux_virtual_machine" "vmB1s" {
     offer     = "ubuntu-24_04-lts"
     sku       = "server"
     # sku       = "minimal-arm64"
-    version   = "latest"
+    version = "latest"
   }
 
-  computer_name  = var.az_vm_size
+  computer_name  = "${var.az_vm_size}${var.resource_group_location}"
   admin_username = var.username
   # https://www.phillipsj.net/posts/cloud-init-with-terraform/
   custom_data = data.template_cloudinit_config.config.rendered
@@ -115,9 +115,4 @@ resource "azurerm_linux_virtual_machine" "vmB1s" {
     username   = var.username
     public_key = tls_private_key.dummy_key.public_key_openssh
   }
-}
-
-resource "tailscale_dns_split_nameservers" "azure_split_nameservers" {
-  domain      = "internal.cloudapp.net"
-  nameservers = ["168.63.129.16"]
 }
