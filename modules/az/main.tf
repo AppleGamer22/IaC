@@ -15,6 +15,7 @@ terraform {
   }
 }
 
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret#creating-a-service-principal-using-the-azure-cli
 # https://docs.env0.com/docs/connect-your-cloud-account#azure
 provider "azurerm" {
   features {
@@ -25,7 +26,8 @@ provider "azurerm" {
       prevent_deletion_if_contains_resources = false
     }
   }
-  subscription_id = var.azure_subscription_id
+  resource_provider_registrations = "none"
+  # subscription_id = var.azure_subscription_id
 }
 
 provider "tailscale" {
@@ -34,7 +36,7 @@ provider "tailscale" {
 }
 
 module "ts" {
-  source = "../ts"
+  source            = "../ts"
   tailscale_api_key = var.tailscale_api_key
 }
 

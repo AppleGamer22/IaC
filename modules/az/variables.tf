@@ -1,11 +1,11 @@
-variable "azure_subscription_id" {
-  type = string
-  sensitive = true
-  description = "Azure Subscription ID"
-}
+# variable "azure_subscription_id" {
+#   type = string
+#   sensitive = true
+#   description = "Azure Subscription ID"
+# }
 
 variable "resource_group_location" {
-  type        = string
+  type = string
   # default     = "australiaeast"
   # default     = "australiasoutheast"
   # default     = "eastus"
@@ -20,7 +20,7 @@ variable "resource_group_name_prefix" {
 }
 
 variable "az_vm_size" {
-  type = string
+  type    = string
   default = "B1s"
 }
 
@@ -31,7 +31,7 @@ variable "username" {
 }
 
 variable "tailnet_name" {
-  type = string
+  type    = string
   default = "applegamer22.github"
 }
 
