@@ -17,6 +17,8 @@ terraform {
 
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/guides/service_principal_client_secret#creating-a-service-principal-using-the-azure-cli
 # https://docs.env0.com/docs/connect-your-cloud-account#azure
+# TODO: DON'T FORGET THIS az CLI FLAG
+# $ az ad sp create-for-rbac --role="Contributor" --scopes="/subscriptions/20000000-0000-0000-0000-000000000000"
 provider "azurerm" {
   features {
     virtual_machine {
