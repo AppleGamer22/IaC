@@ -17,6 +17,7 @@ resource "tailscale_tailnet_key" "tailscale_key" {
   reusable      = true
   ephemeral     = false
   preauthorized = true
+  tags          = ["tag:vpn"]
   expiry        = 7776000
   description   = "IaC Tailscale key for 90 days"
 }
