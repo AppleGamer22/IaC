@@ -106,7 +106,7 @@ resource "azurerm_linux_virtual_machine" "vmB1s" {
     version = "latest"
   }
 
-  computer_name  = "AZ${var.az_vm_size}${var.az_region}"
+  computer_name  = "az${var.az_vm_size}${var.az_region}"
   admin_username = var.username
   # https://www.phillipsj.net/posts/cloud-init-with-terraform/
   custom_data = data.template_cloudinit_config.config.rendered
