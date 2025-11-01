@@ -11,7 +11,8 @@ terraform {
 
 
 module "az" {
-  source = "./modules/az"
+  source    = "./modules/az"
+  az_region = var.az_region
   # azure_subscription_id = var.azure_subscription_id
   tailscale_api_key = var.tailscale_api_key
 }

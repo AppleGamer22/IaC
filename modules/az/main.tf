@@ -47,7 +47,7 @@ module "ts" {
 # }
 
 resource "azurerm_resource_group" "az_resource_group" {
-  location = var.resource_group_location
-  name     = var.resource_group_location
+  location = var.az_region
+  name     = var.az_region
 }
 

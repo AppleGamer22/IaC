@@ -24,3 +24,9 @@ variable "tailscale_api_key" {
   sensitive   = true
   description = "Tailscale API Key"
 }
+
+variable "az_region" {
+  type        = string
+  default     = "israelcentral"
+  description = "Location of the resource group."
+}

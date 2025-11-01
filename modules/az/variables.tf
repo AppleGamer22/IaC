@@ -4,11 +4,8 @@
 #   description = "Azure Subscription ID"
 # }
 
-variable "resource_group_location" {
-  type = string
-  # default     = "australiaeast"
-  # default     = "australiasoutheast"
-  # default     = "eastus"
+variable "az_region" {
+  type        = string
   default     = "israelcentral"
   description = "Location of the resource group."
 }
