@@ -146,7 +146,12 @@ resource "terraform_data" "tailscale_device_cleanup" {
     device_id         = data.tailscale_device.azVM.id
     tailscale_api_key = var.tailscale_api_key
   }
-  depends_on = [azurerm_linux_virtual_machine.azVM, data.tailscale_device.azVM]
+  depends_on = [
+    azurerm_linux_virtual_machine.azVM,
+    data.tailscale_device.azVM,
+    tailscale_device_authorization.azVM,
+    tailscale_device_subnet_routes.azVM,
+  ]
   provisioner "local-exec" {
     when       = destroy
     on_failure = continue
