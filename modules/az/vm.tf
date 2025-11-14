@@ -142,7 +142,7 @@ resource "tailscale_device_subnet_routes" "azVM" {
 
 resource "terraform_data" "tailscale_device_cleanup" {
   input = {
-    device_id         = data.tailscale_device.azVM.node_id
+    device_id         = data.tailscale_device.azVM.id
     tailscale_api_key = var.tailscale_api_key
   }
   provisioner "local-exec" {
