@@ -117,45 +117,40 @@ resource "azurerm_linux_virtual_machine" "azVM" {
   }
 }
 
-# data "tailscale_device" "azVM" {
-#   hostname   = azurerm_linux_virtual_machine.azVM.computer_name
-#   wait_for   = "120s"
-#   depends_on = [azurerm_linux_virtual_machine.azVM]
-# }
+data "tailscale_device" "azVM" {
+  hostname   = azurerm_linux_virtual_machine.azVM.computer_name
+  wait_for   = "120s"
+  depends_on = [azurerm_linux_virtual_machine.azVM]
+}
 
-# resource "tailscale_device_authorization" "azVM" {
-#   device_id  = data.tailscale_device.azVM.node_id
-#   authorized = true
-# }
+resource "tailscale_device_authorization" "azVM" {
+  device_id  = data.tailscale_device.azVM.node_id
+  authorized = true
+  depends_on = [terraform_data.tailscale_device_cleanup]
+}
 
-# resource "tailscale_device_subnet_routes" "azVM" {
-#   # Prefer the new, stable `node_id` attribute; the legacy `.id` field still works.
-#   device_id = data.tailscale_device.azVM.node_id
-#   routes = [
-#     "10.1.0.0/24",
-#     "168.63.129.16/32",
-#     # Configure as an exit node
-#     "0.0.0.0/0",
-#     "::/0",
-#   ]
-# }
+resource "tailscale_device_subnet_routes" "azVM" {
+  # Prefer the new, stable `node_id` attribute; the legacy `.id` field still works.
+  device_id = data.tailscale_device.azVM.node_id
+  routes = [
+    "10.1.0.0/24",
+    "168.63.129.16/32",
+    # Configure as an exit node
+    "0.0.0.0/0",
+    "::/0",
+  ]
+}
 
-# # https://github.com/tailscale/terraform-provider-tailscale/issues/68#issuecomment-3522684631
-# resource "terraform_data" "tailscale_device_cleanup" {
-#   input = {
-#     device_id         = data.tailscale_device.azVM.id
-#     tailscale_api_key = var.tailscale_api_key
-#   }
-#   depends_on = [
-#     azurerm_linux_virtual_machine.azVM,
-#     data.tailscale_device.azVM,
-#     tailscale_device_authorization.azVM,
-#     tailscale_device_subnet_routes.azVM,
-#   ]
-#   provisioner "local-exec" {
-#     when       = destroy
-#     on_failure = continue
-#     # https://tailscale.com/api#tag/devices/delete/device/{deviceId}
-#     command = "curl 'https://api.tailscale.com/api/v2/device/${self.input.device_id}' --request DELETE --header 'Authorization: Bearer ${self.input.tailscale_api_key}'"
-#   }
-# }
+# https://github.com/tailscale/terraform-provider-tailscale/issues/68#issuecomment-3522684631
+resource "terraform_data" "tailscale_device_cleanup" {
+  input = {
+    device_id         = data.tailscale_device.azVM.id
+    tailscale_api_key = var.tailscale_api_key
+  }
+  provisioner "local-exec" {
+    when       = destroy
+    on_failure = continue
+    # https://tailscale.com/api#tag/devices/delete/device/{deviceId}
+    command = "curl 'https://api.tailscale.com/api/v2/device/${self.input.device_id}' --request DELETE --header 'Authorization: Bearer ${self.input.tailscale_api_key}'"
+  }
+}
