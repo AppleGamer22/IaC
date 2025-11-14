@@ -106,7 +106,7 @@ resource "azurerm_linux_virtual_machine" "azVM" {
     version = "latest"
   }
 
-  computer_name  = "az${var.az_vm_size}${var.az_region}"
+  computer_name  = lower("az${var.az_vm_size}${var.az_region}")
   admin_username = var.username
   # https://www.phillipsj.net/posts/cloud-init-with-terraform/
   custom_data = data.template_cloudinit_config.config.rendered
@@ -117,26 +117,26 @@ resource "azurerm_linux_virtual_machine" "azVM" {
   }
 }
 
-data "tailscale_device" "azVM" {
-  name       = "az${var.az_vm_size}${var.az_region}"
-  wait_for   = "60s"
-  depends_on = [azurerm_linux_virtual_machine.azVM]
-}
+# data "tailscale_device" "azVM" {
+#   name       = azurerm_linux_virtual_machine.azVM.computer_name
+#   wait_for   = "60s"
+#   depends_on = [azurerm_linux_virtual_machine.azVM]
+# }
 
-resource "tailscale_device_authorization" "azVM" {
-  device_id  = data.tailscale_device.azVM.node_id
-  authorized = true
-}
+# resource "tailscale_device_authorization" "azVM" {
+#   device_id  = data.tailscale_device.azVM.node_id
+#   authorized = true
+# }
 
-resource "tailscale_device_subnet_routes" "azVM" {
-  # Prefer the new, stable `node_id` attribute; the legacy `.id` field still works.
-  device_id = data.tailscale_device.azVM.node_id
-  routes = [
-    "10.1.0.0/24",
-    "168.63.129.16/32",
-    # Configure as an exit node
-    "0.0.0.0/0",
-    "::/0",
-  ]
-}
+# resource "tailscale_device_subnet_routes" "azVM" {
+#   # Prefer the new, stable `node_id` attribute; the legacy `.id` field still works.
+#   device_id = data.tailscale_device.azVM.node_id
+#   routes = [
+#     "10.1.0.0/24",
+#     "168.63.129.16/32",
+#     # Configure as an exit node
+#     "0.0.0.0/0",
+#     "::/0",
+#   ]
+# }
 
