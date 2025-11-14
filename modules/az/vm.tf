@@ -131,7 +131,8 @@ resource "tailscale_device_authorization" "azVM" {
 
 resource "tailscale_device_subnet_routes" "azVM" {
   # Prefer the new, stable `node_id` attribute; the legacy `.id` field still works.
-  device_id = data.tailscale_device.azVM.node_id
+  device_id  = data.tailscale_device.azVM.node_id
+  depends_on = [terraform_data.tailscale_device_cleanup]
   routes = [
     "10.1.0.0/24",
     "168.63.129.16/32",
