@@ -82,7 +82,7 @@ data "template_cloudinit_config" "config" {
 
 
 # Create virtual machine
-resource "azurerm_linux_virtual_machine" "vmB1s" {
+resource "azurerm_linux_virtual_machine" "azVM" {
   # count                 = 0
   name                  = "${azurerm_resource_group.az_resource_group.name}_${var.az_vm_size}"
   location              = azurerm_resource_group.az_resource_group.location
@@ -116,3 +116,27 @@ resource "azurerm_linux_virtual_machine" "vmB1s" {
     public_key = tls_private_key.dummy_key.public_key_openssh
   }
 }
+
+data "tailscale_device" "azVM" {
+  name       = "az${var.az_vm_size}${var.az_region}"
+  wait_for   = "60s"
+  depends_on = [azurerm_linux_virtual_machine.azVM]
+}
+
+resource "tailscale_device_authorization" "azVM" {
+  device_id  = data.tailscale_device.azVM.node_id
+  authorized = true
+}
+
+resource "tailscale_device_subnet_routes" "azVM" {
+  # Prefer the new, stable `node_id` attribute; the legacy `.id` field still works.
+  device_id = data.tailscale_device.azVM.node_id
+  routes = [
+    "10.1.0.0/24",
+    "168.63.129.16/32",
+    # Configure as an exit node
+    "0.0.0.0/0",
+    "::/0",
+  ]
+}
+
