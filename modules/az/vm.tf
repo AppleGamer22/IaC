@@ -126,11 +126,6 @@ data "tailscale_device" "azVM" {
 resource "tailscale_device_authorization" "azVM" {
   device_id  = data.tailscale_device.azVM.node_id
   authorized = true
-  provisioner "local-exec" {
-    when = destroy
-    # https://tailscale.com/api#tag/devices/delete/device/{deviceId}
-    command = "curl 'https://api.tailscale.com/api/v2/device/${data.tailscale_device.azVM.node_id}' --request DELETE --header 'Authorization: Bearer ${var.tailscale_api_key}'"
-  }
 }
 
 resource "tailscale_device_subnet_routes" "azVM" {
