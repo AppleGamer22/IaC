@@ -140,6 +140,7 @@ resource "tailscale_device_subnet_routes" "azVM" {
   ]
 }
 
+# https://github.com/tailscale/terraform-provider-tailscale/issues/68#issuecomment-3522684631
 resource "terraform_data" "tailscale_device_cleanup" {
   input = {
     device_id         = data.tailscale_device.azVM.id
