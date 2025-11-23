@@ -6,7 +6,6 @@
 
 variable "az_region" {
   type        = string
-  default     = "israelcentral"
   description = "Location of the resource group."
 }
 

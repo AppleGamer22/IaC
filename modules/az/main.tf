@@ -46,7 +46,7 @@ module "ts" {
 #   prefix = var.resource_group_name_prefix
 # }
 
-resource "azurerm_resource_group" "az_resource_group" {
+resource "azurerm_resource_group" "azResourceGroup" {
   location = var.az_region
   name     = var.az_region
 }
